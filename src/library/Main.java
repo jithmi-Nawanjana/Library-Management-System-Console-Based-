@@ -12,8 +12,7 @@ public class Main {
         library.addMember(new Member("M1", "Alice", "alice@example.com"));
         library.addMember(new Member("M2", "Bob", "bob@example.com"));
 
-        System.out.println("Current books:");
-        library.getBooks().forEach(System.out::println);
+        library.displayAllBooks();
 
         try (Scanner scanner = new Scanner(System.in)) {
             boolean adding = true;
@@ -42,8 +41,8 @@ public class Main {
             }
         }
 
-        System.out.println("\nUpdated book list:");
-        library.getBooks().forEach(System.out::println);
+        System.out.println();
+        library.displayAllBooks();
     }
 }
 

@@ -35,6 +35,19 @@ public class Library {
         return Collections.unmodifiableList(members);
     }
 
+    public void displayAllBooks() {
+        if (books.isEmpty()) {
+            System.out.println("No books in the library.");
+            return;
+        }
+
+        System.out.println("Books in library:");
+        for (int i = 0; i < books.size(); i++) {
+            Book book = books.get(i);
+            System.out.println((i + 1) + ". " + book);
+        }
+    }
+
     public Optional<Book> findBookById(String id) {
         return books.stream().filter(book -> book.getId().equals(id)).findFirst();
     }
