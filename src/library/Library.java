@@ -14,8 +14,13 @@ public class Library {
         this.members = new ArrayList<>();
     }
 
-    public void addBook(Book book) {
+    public boolean addBook(Book book) {
+        boolean exists = books.stream().anyMatch(existing -> existing.getId().equals(book.getId()));
+        if (exists) {
+            return false;
+        }
         books.add(book);
+        return true;
     }
 
     public void addMember(Member member) {
