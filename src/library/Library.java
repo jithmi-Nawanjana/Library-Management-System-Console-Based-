@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Library {
     private final List<Book> books;
@@ -54,6 +55,26 @@ public class Library {
 
     public Optional<Member> findMemberById(String id) {
         return members.stream().filter(member -> member.getId().equals(id)).findFirst();
+    }
+
+    public List<Book> searchBooksByTitle(String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return Collections.emptyList();
+        }
+        String lower = keyword.toLowerCase();
+        return books.stream()
+                .filter(book -> book.getTitle().toLowerCase().contains(lower))
+                .collect(Collectors.toList());
+    }
+
+    public List<Book> searchBooksByAuthor(String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return Collections.emptyList();
+        }
+        String lower = keyword.toLowerCase();
+        return books.stream()
+                .filter(book -> book.getAuthor().toLowerCase().contains(lower))
+                .collect(Collectors.toList());
     }
 }
 

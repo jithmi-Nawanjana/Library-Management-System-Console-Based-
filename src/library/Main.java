@@ -1,5 +1,6 @@
 package library;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -39,10 +40,47 @@ public class Main {
                     adding = false;
                 }
             }
+
+            boolean searching = true;
+            while (searching) {
+                System.out.print("\nSearch by (1) title, (2) author, (q) quit search: ");
+                String option = scanner.nextLine().trim().toLowerCase();
+                switch (option) {
+                    case "1":
+                        System.out.print("Enter title keyword: ");
+                        String titleKey = scanner.nextLine().trim();
+                        List<Book> byTitle = library.searchBooksByTitle(titleKey);
+                        printBooks("Results by title", byTitle);
+                        break;
+                    case "2":
+                        System.out.print("Enter author keyword: ");
+                        String authorKey = scanner.nextLine().trim();
+                        List<Book> byAuthor = library.searchBooksByAuthor(authorKey);
+                        printBooks("Results by author", byAuthor);
+                        break;
+                    case "q":
+                        searching = false;
+                        break;
+                    default:
+                        System.out.println("Invalid option. Choose 1, 2, or q.");
+                        break;
+                }
+            }
         }
 
         System.out.println();
         library.displayAllBooks();
+    }
+
+    private static void printBooks(String label, List<Book> books) {
+        System.out.println("\n" + label + ":");
+        if (books.isEmpty()) {
+            System.out.println("No matching books found.");
+            return;
+        }
+        for (int i = 0; i < books.size(); i++) {
+            System.out.println((i + 1) + ". " + books.get(i));
+        }
     }
 }
 
