@@ -89,5 +89,18 @@ public class Library {
         book.setAvailable(false);
         return true;
     }
+
+    public boolean returnBook(String bookId) {
+        Optional<Book> bookOpt = findBookById(bookId);
+        if (bookOpt.isEmpty()) {
+            return false;
+        }
+        Book book = bookOpt.get();
+        if (book.isAvailable()) {
+            return false;
+        }
+        book.setAvailable(true);
+        return true;
+    }
 }
 
