@@ -1,6 +1,8 @@
 package library;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -178,8 +180,69 @@ public class Library {
         }
     }
 
+    public boolean loadBooksFromFile(String filePath) {
+        List<Book> loaded = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.isBlank()) {
+                    continue;
+                }
+                String[] parts = splitCsvLine(line);
+                if (parts.length != 4) {
+                    System.out.println("Skipping invalid line: " + line);
+                    continue;
+                }
+                String id = parts[0];
+                String title = unescapeComma(parts[1]);
+                String author = unescapeComma(parts[2]);
+                boolean available = Boolean.parseBoolean(parts[3]);
+                Book book = new Book(id, title, author);
+                book.setAvailable(available);
+                loaded.add(book);
+            }
+        } catch (IOException e) {
+            System.out.println("Failed to load books: " + e.getMessage());
+            return false;
+        }
+
+        // Replace current list with loaded data, ignoring duplicate ids in the file.
+        this.books.clear();
+        for (Book book : loaded) {
+            addBook(book);
+        }
+        return true;
+    }
+
     private String escapeComma(String value) {
         return value.replace(",", "\\,");
+    }
+
+    private String unescapeComma(String value) {
+        return value.replace("\\,", ",");
+    }
+
+    private String[] splitCsvLine(String line) {
+        List<String> parts = new ArrayList<>();
+        StringBuilder current = new StringBuilder();
+        boolean escaping = false;
+
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (escaping) {
+                current.append(c);
+                escaping = false;
+            } else if (c == '\\') {
+                escaping = true;
+            } else if (c == ',') {
+                parts.add(current.toString());
+                current.setLength(0);
+            } else {
+                current.append(c);
+            }
+        }
+        parts.add(current.toString());
+        return parts.toArray(new String[0]);
     }
 }
 

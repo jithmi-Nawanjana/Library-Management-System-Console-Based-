@@ -47,11 +47,14 @@ public class Main {
                         handleSaveBooks(library, scanner);
                         break;
                     case "8":
+                        handleLoadBooks(library, scanner);
+                        break;
+                    case "9":
                         running = false;
                         System.out.println("Exiting. Goodbye!");
                         break;
                     default:
-                        System.out.println("Invalid option. Please choose 1-8.");
+                        System.out.println("Invalid option. Please choose 1-9.");
                         break;
                 }
             }
@@ -67,7 +70,8 @@ public class Main {
         System.out.println("5. Add Member");
         System.out.println("6. View All Books");
         System.out.println("7. Save Books to File");
-        System.out.println("8. Exit");
+        System.out.println("8. Load Books from File");
+        System.out.println("9. Exit");
     }
 
     private static void handleAddBook(Library library, Scanner scanner) {
@@ -162,6 +166,17 @@ public class Main {
             System.out.println("Books saved to " + path);
         } else {
             System.out.println("Failed to save books. Check the path and try again.");
+        }
+    }
+
+    private static void handleLoadBooks(Library library, Scanner scanner) {
+        System.out.print("Enter file path to load books: ");
+        String path = scanner.nextLine().trim();
+        boolean loaded = library.loadBooksFromFile(path);
+        if (loaded) {
+            System.out.println("Books loaded from " + path);
+        } else {
+            System.out.println("Failed to load books. Check the path and file format.");
         }
     }
 
