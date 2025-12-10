@@ -9,10 +9,12 @@ import java.util.stream.Collectors;
 public class Library {
     private final List<Book> books;
     private final List<Member> members;
+    private int borrowLimit;
 
     public Library() {
         this.books = new ArrayList<>();
         this.members = new ArrayList<>();
+        this.borrowLimit = 3; // default limit per member
     }
 
     public boolean addBook(Book book) {
@@ -39,6 +41,17 @@ public class Library {
 
     public List<Member> getMembers() {
         return Collections.unmodifiableList(members);
+    }
+
+    public int getBorrowLimit() {
+        return borrowLimit;
+    }
+
+    public void setBorrowLimit(int borrowLimit) {
+        if (borrowLimit < 1) {
+            throw new IllegalArgumentException("Borrow limit must be at least 1");
+        }
+        this.borrowLimit = borrowLimit;
     }
 
     public void displayAllBooks() {
@@ -109,6 +122,9 @@ public class Library {
         }
 
         Member member = memberOpt.get();
+        if (member.getBorrowedBooks().size() >= borrowLimit) {
+            return false;
+        }
         book.setAvailable(false);
         member.addBorrowedBook(book);
         return true;

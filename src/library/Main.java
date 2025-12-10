@@ -107,7 +107,7 @@ public class Main {
                         if (borrowed) {
                             System.out.println("Book borrowed and assigned to member.");
                         } else {
-                            System.out.println("Borrow failed (check ids or availability).");
+                            System.out.println("Borrow failed (check ids, availability, or borrow limit).");
                         }
                         break;
                     case "r":
