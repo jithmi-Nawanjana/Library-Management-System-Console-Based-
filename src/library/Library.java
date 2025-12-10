@@ -95,28 +95,45 @@ public class Library {
                 .collect(Collectors.toList());
     }
 
-    public boolean borrowBook(String bookId) {
+    public boolean borrowBook(String bookId, String memberId) {
         Optional<Book> bookOpt = findBookById(bookId);
-        if (bookOpt.isEmpty()) {
+        Optional<Member> memberOpt = findMemberById(memberId);
+
+        if (bookOpt.isEmpty() || memberOpt.isEmpty()) {
             return false;
         }
+
         Book book = bookOpt.get();
         if (!book.isAvailable()) {
             return false;
         }
+
+        Member member = memberOpt.get();
         book.setAvailable(false);
+        member.addBorrowedBook(book);
         return true;
     }
 
-    public boolean returnBook(String bookId) {
+    public boolean returnBook(String bookId, String memberId) {
         Optional<Book> bookOpt = findBookById(bookId);
-        if (bookOpt.isEmpty()) {
+        Optional<Member> memberOpt = findMemberById(memberId);
+
+        if (bookOpt.isEmpty() || memberOpt.isEmpty()) {
             return false;
         }
+
         Book book = bookOpt.get();
+        Member member = memberOpt.get();
+
+        boolean wasBorrowedByMember = member.removeBorrowedBook(bookId);
+        if (!wasBorrowedByMember) {
+            return false;
+        }
+
         if (book.isAvailable()) {
             return false;
         }
+
         book.setAvailable(true);
         return true;
     }

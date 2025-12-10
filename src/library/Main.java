@@ -99,23 +99,27 @@ public class Main {
                 String option = scanner.nextLine().trim().toLowerCase();
                 switch (option) {
                     case "b":
+                        System.out.print("Enter member id: ");
+                        String borrowerId = scanner.nextLine().trim();
                         System.out.print("Enter book id to borrow: ");
                         String borrowId = scanner.nextLine().trim();
-                        boolean borrowed = library.borrowBook(borrowId);
+                        boolean borrowed = library.borrowBook(borrowId, borrowerId);
                         if (borrowed) {
-                            System.out.println("Book borrowed. Status updated to unavailable.");
+                            System.out.println("Book borrowed and assigned to member.");
                         } else {
-                            System.out.println("Borrow failed (id not found or already borrowed).");
+                            System.out.println("Borrow failed (check ids or availability).");
                         }
                         break;
                     case "r":
+                        System.out.print("Enter member id: ");
+                        String returnMemberId = scanner.nextLine().trim();
                         System.out.print("Enter book id to return: ");
                         String returnId = scanner.nextLine().trim();
-                        boolean returned = library.returnBook(returnId);
+                        boolean returned = library.returnBook(returnId, returnMemberId);
                         if (returned) {
-                            System.out.println("Book returned. Status updated to available.");
+                            System.out.println("Book returned and removed from member record.");
                         } else {
-                            System.out.println("Return failed (id not found or already available).");
+                            System.out.println("Return failed (check ids or current borrower).");
                         }
                         break;
                     case "c":
