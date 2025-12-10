@@ -76,5 +76,18 @@ public class Library {
                 .filter(book -> book.getAuthor().toLowerCase().contains(lower))
                 .collect(Collectors.toList());
     }
+
+    public boolean borrowBook(String bookId) {
+        Optional<Book> bookOpt = findBookById(bookId);
+        if (bookOpt.isEmpty()) {
+            return false;
+        }
+        Book book = bookOpt.get();
+        if (!book.isAvailable()) {
+            return false;
+        }
+        book.setAvailable(false);
+        return true;
+    }
 }
 

@@ -66,6 +66,30 @@ public class Main {
                         break;
                 }
             }
+
+            boolean borrowing = true;
+            while (borrowing) {
+                System.out.print("\nBorrow menu: (b) borrow a book, (q) quit: ");
+                String option = scanner.nextLine().trim().toLowerCase();
+                switch (option) {
+                    case "b":
+                        System.out.print("Enter book id to borrow: ");
+                        String borrowId = scanner.nextLine().trim();
+                        boolean borrowed = library.borrowBook(borrowId);
+                        if (borrowed) {
+                            System.out.println("Book borrowed. Status updated to unavailable.");
+                        } else {
+                            System.out.println("Borrow failed (id not found or already borrowed).");
+                        }
+                        break;
+                    case "q":
+                        borrowing = false;
+                        break;
+                    default:
+                        System.out.println("Invalid option. Choose b or q.");
+                        break;
+                }
+            }
         }
 
         System.out.println();
