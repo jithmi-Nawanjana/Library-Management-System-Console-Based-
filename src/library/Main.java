@@ -69,7 +69,7 @@ public class Main {
 
             boolean borrowing = true;
             while (borrowing) {
-                System.out.print("\nBorrow/Return menu: (b) borrow, (r) return, (q) quit: ");
+                System.out.print("\nBorrow/Return menu: (b) borrow, (r) return, (c) check status, (q) quit: ");
                 String option = scanner.nextLine().trim().toLowerCase();
                 switch (option) {
                     case "b":
@@ -92,11 +92,25 @@ public class Main {
                             System.out.println("Return failed (id not found or already available).");
                         }
                         break;
+                    case "c":
+                        System.out.print("Enter book id to check: ");
+                        String checkId = scanner.nextLine().trim();
+                        library.isBookBorrowed(checkId).ifPresentOrElse(
+                                borrowedStatus -> {
+                                    if (borrowedStatus) {
+                                        System.out.println("Book is currently borrowed.");
+                                    } else {
+                                        System.out.println("Book is available.");
+                                    }
+                                },
+                                () -> System.out.println("Book id not found.")
+                        );
+                        break;
                     case "q":
                         borrowing = false;
                         break;
                     default:
-                        System.out.println("Invalid option. Choose b, r, or q.");
+                        System.out.println("Invalid option. Choose b, r, c, or q.");
                         break;
                 }
             }

@@ -102,5 +102,9 @@ public class Library {
         book.setAvailable(true);
         return true;
     }
+
+    public Optional<Boolean> isBookBorrowed(String bookId) {
+        return findBookById(bookId).map(book -> !book.isAvailable());
+    }
 }
 
