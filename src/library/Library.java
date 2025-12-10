@@ -1,5 +1,9 @@
 package library;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -156,6 +160,26 @@ public class Library {
 
     public Optional<Boolean> isBookBorrowed(String bookId) {
         return findBookById(bookId).map(book -> !book.isAvailable());
+    }
+
+    public boolean saveBooksToFile(String filePath) {
+        try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath)))) {
+            for (Book book : books) {
+                writer.printf("%s,%s,%s,%b%n",
+                        book.getId(),
+                        escapeComma(book.getTitle()),
+                        escapeComma(book.getAuthor()),
+                        book.isAvailable());
+            }
+            return true;
+        } catch (IOException e) {
+            System.out.println("Failed to save books: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private String escapeComma(String value) {
+        return value.replace(",", "\\,");
     }
 }
 

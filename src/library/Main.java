@@ -1,5 +1,6 @@
 package library;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -43,11 +44,14 @@ public class Main {
                         library.displayAllBooks();
                         break;
                     case "7":
+                        handleSaveBooks(library, scanner);
+                        break;
+                    case "8":
                         running = false;
                         System.out.println("Exiting. Goodbye!");
                         break;
                     default:
-                        System.out.println("Invalid option. Please choose 1-7.");
+                        System.out.println("Invalid option. Please choose 1-8.");
                         break;
                 }
             }
@@ -62,7 +66,8 @@ public class Main {
         System.out.println("4. Return Book");
         System.out.println("5. Add Member");
         System.out.println("6. View All Books");
-        System.out.println("7. Exit");
+        System.out.println("7. Save Books to File");
+        System.out.println("8. Exit");
     }
 
     private static void handleAddBook(Library library, Scanner scanner) {
@@ -146,6 +151,17 @@ public class Main {
             System.out.println("Member added!");
         } else {
             System.out.println("Member id already exists. Try another id.");
+        }
+    }
+
+    private static void handleSaveBooks(Library library, Scanner scanner) {
+        System.out.print("Enter file path to save books: ");
+        String path = scanner.nextLine().trim();
+        boolean saved = library.saveBooksToFile(path);
+        if (saved) {
+            System.out.println("Books saved to " + path);
+        } else {
+            System.out.println("Failed to save books. Check the path and try again.");
         }
     }
 
