@@ -24,8 +24,13 @@ public class Library {
         return true;
     }
 
-    public void addMember(Member member) {
+    public boolean addMember(Member member) {
+        boolean exists = members.stream().anyMatch(existing -> existing.getId().equals(member.getId()));
+        if (exists) {
+            return false;
+        }
         members.add(member);
+        return true;
     }
 
     public List<Book> getBooks() {
@@ -55,6 +60,19 @@ public class Library {
 
     public Optional<Member> findMemberById(String id) {
         return members.stream().filter(member -> member.getId().equals(id)).findFirst();
+    }
+
+    public void displayAllMembers() {
+        if (members.isEmpty()) {
+            System.out.println("No members in the system.");
+            return;
+        }
+
+        System.out.println("Members:");
+        for (int i = 0; i < members.size(); i++) {
+            Member member = members.get(i);
+            System.out.println((i + 1) + ". " + member);
+        }
     }
 
     public List<Book> searchBooksByTitle(String keyword) {

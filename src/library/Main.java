@@ -14,6 +14,7 @@ public class Main {
         library.addMember(new Member("M2", "Bob", "bob@example.com"));
 
         library.displayAllBooks();
+        library.displayAllMembers();
 
         try (Scanner scanner = new Scanner(System.in)) {
             boolean adding = true;
@@ -38,6 +39,31 @@ public class Main {
                 String choice = scanner.nextLine().trim().toLowerCase();
                 if (!choice.equals("y")) {
                     adding = false;
+                }
+            }
+
+            boolean addingMembers = true;
+            while (addingMembers) {
+                System.out.print("\nEnter new member id: ");
+                String memberId = scanner.nextLine().trim();
+
+                System.out.print("Enter member name: ");
+                String memberName = scanner.nextLine().trim();
+
+                System.out.print("Enter member email: ");
+                String memberEmail = scanner.nextLine().trim();
+
+                boolean memberAdded = library.addMember(new Member(memberId, memberName, memberEmail));
+                if (memberAdded) {
+                    System.out.println("Member added!");
+                } else {
+                    System.out.println("Member id already exists. Try another id.");
+                }
+
+                System.out.print("Add another member? (y/n): ");
+                String choice = scanner.nextLine().trim().toLowerCase();
+                if (!choice.equals("y")) {
+                    addingMembers = false;
                 }
             }
 
@@ -118,6 +144,7 @@ public class Main {
 
         System.out.println();
         library.displayAllBooks();
+        library.displayAllMembers();
     }
 
     private static void printBooks(String label, List<Book> books) {
